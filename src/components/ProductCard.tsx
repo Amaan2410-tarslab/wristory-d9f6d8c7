@@ -1,5 +1,6 @@
 import { Heart, ShoppingCart, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 
 interface ProductCardProps {
   id: string;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ 
+  id,
   name, 
   brand, 
   price, 
@@ -23,6 +25,11 @@ export const ProductCard = ({
   isNew, 
   isSale 
 }: ProductCardProps) => {
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    addToCart(id);
+  };
   return (
     <div className="watch-card group cursor-pointer">
       {/* Image Container */}
@@ -59,7 +66,11 @@ export const ProductCard = ({
 
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Button variant="luxury" className="transform translate-y-2 group-hover:translate-y-0 transition-transform">
+          <Button 
+            variant="luxury" 
+            className="transform translate-y-2 group-hover:translate-y-0 transition-transform"
+            onClick={handleAddToCart}
+          >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Add to Cart
           </Button>
@@ -91,11 +102,11 @@ export const ProductCard = ({
         {/* Price */}
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold price-glow">
-            ₹{price.toLocaleString('en-IN')}
+            ₹{Math.round(price).toLocaleString('en-IN')}
           </span>
           {originalPrice && (
             <span className="text-sm text-muted-foreground line-through">
-              ₹{originalPrice.toLocaleString('en-IN')}
+              ₹{Math.round(originalPrice).toLocaleString('en-IN')}
             </span>
           )}
         </div>

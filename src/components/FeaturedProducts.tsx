@@ -1,77 +1,22 @@
 import { ProductCard } from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import watch1 from "@/assets/watch-1.jpg";
-import watch2 from "@/assets/watch-2.jpg";
-import watch3 from "@/assets/watch-3.jpg";
-
-const mockProducts = [
-  {
-    id: "1",
-    name: "Royal Chronograph Gold Edition",
-    brand: "LuxWatch",
-    price: 349999,
-    originalPrice: 399999,
-    image: watch1,
-    rating: 5,
-    isNew: true,
-    isSale: true,
-  },
-  {
-    id: "2",
-    name: "Ocean Master Swiss Dive",
-    brand: "Swiss Precision",
-    price: 279999,
-    image: watch2,
-    rating: 4,
-    isNew: false,
-    isSale: false,
-  },
-  {
-    id: "3",
-    name: "Heritage Rose Gold Classic",
-    brand: "Heritage Collection",
-    price: 189999,
-    originalPrice: 229999,
-    image: watch3,
-    rating: 5,
-    isNew: false,
-    isSale: true,
-  },
-  {
-    id: "4",
-    name: "Sport Titanium Pro",
-    brand: "SportTech",
-    price: 159999,
-    image: watch1,
-    rating: 4,
-    isNew: true,
-    isSale: false,
-  },
-  {
-    id: "5",
-    name: "Elegance Diamond Bezel",
-    brand: "Diamond Luxury",
-    price: 599999,
-    image: watch2,
-    rating: 5,
-    isNew: false,
-    isSale: false,
-  },
-  {
-    id: "6",
-    name: "Racing Carbon Fiber",
-    brand: "Speed Collection",
-    price: 249999,
-    originalPrice: 299999,
-    image: watch3,
-    rating: 4,
-    isNew: false,
-    isSale: true,
-  },
-];
+import { useProducts } from "@/hooks/useProducts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const FeaturedProducts = () => {
+  const { products, loading, error } = useProducts(true);
+
+  if (error) {
+    return (
+      <section className="py-20 px-6">
+        <div className="container mx-auto text-center">
+          <p className="text-destructive">Failed to load featured products</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 px-6">
       <div className="container mx-auto">
@@ -94,15 +39,38 @@ export const FeaturedProducts = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {mockProducts.map((product, index) => (
-            <div 
-              key={product.id} 
-              className="animate-scale-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <ProductCard {...product} />
-            </div>
-          ))}
+          {loading ? (
+            // Loading skeletons
+            Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="space-y-4">
+                <Skeleton className="h-64 w-full rounded-xl" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-6 w-28" />
+              </div>
+            ))
+          ) : (
+            products.map((product, index) => (
+              <div 
+                key={product.id} 
+                className="animate-scale-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <ProductCard 
+                  id={product.id}
+                  name={product.name}
+                  brand={product.brand}
+                  price={product.price}
+                  originalPrice={product.original_price}
+                  image={product.images?.[0] || '/placeholder.svg'}
+                  rating={Math.round(product.rating)}
+                  isNew={false}
+                  isSale={!!product.original_price}
+                />
+              </div>
+            ))
+          )}
         </div>
 
         {/* View All Button */}

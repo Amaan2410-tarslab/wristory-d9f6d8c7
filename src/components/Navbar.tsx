@@ -1,6 +1,7 @@
 import { ShoppingCart, Search, User, Menu, Heart, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
 import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -13,6 +14,7 @@ import {
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { totalItems } = useCart();
 
   return (
     <nav className="nav-glow fixed top-0 w-full z-50 px-6 py-4">
@@ -88,9 +90,11 @@ export const Navbar = () => {
           {/* Shopping Cart */}
           <Button variant="ghost" size="icon" className="relative hover:bg-primary/20">
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-2 -right-2 bg-accent text-background text-xs rounded-full w-5 h-5 flex items-center justify-center">
-              3
-            </span>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-accent text-background text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
           </Button>
 
           {/* Mobile Menu */}
