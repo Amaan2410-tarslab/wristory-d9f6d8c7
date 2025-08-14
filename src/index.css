@@ -2,57 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Luxury Watch Ecommerce Design System */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Luxury Dark Theme */
+    --background: 220 26% 8%;
+    --foreground: 45 100% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 20% 12%;
+    --card-foreground: 45 100% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 45 100% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Luxury Gold Primary */
+    --primary: 45 100% 65%;
+    --primary-foreground: 220 26% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Premium Silver Secondary */
+    --secondary: 210 20% 25%;
+    --secondary-foreground: 45 100% 95%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Rose Gold Accent */
+    --accent: 15 80% 70%;
+    --accent-foreground: 220 26% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 100% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 45 100% 65%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Premium Gradients */
+    --gradient-luxury: linear-gradient(135deg, hsl(45 100% 65%), hsl(15 80% 70%));
+    --gradient-dark: linear-gradient(135deg, hsl(220 26% 8%), hsl(220 20% 12%));
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 12%), hsl(220 15% 15%));
+    --gradient-glow: linear-gradient(135deg, hsl(45 100% 65% / 0.3), hsl(15 80% 70% / 0.3));
+    
+    /* 3D Effects */
+    --shadow-luxury: 0 25px 50px -12px hsl(45 100% 65% / 0.25);
+    --shadow-card: 0 20px 25px -5px hsl(220 26% 8% / 0.4), 0 10px 10px -5px hsl(220 26% 8% / 0.4);
+    --shadow-glow: 0 0 40px hsl(45 100% 65% / 0.4);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Animations */
+    --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -101,5 +103,123 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  /* 3D Card Effects */
+  .card-3d {
+    @apply relative overflow-hidden;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-luxury);
+    transform-style: preserve-3d;
+  }
+
+  .card-3d:hover {
+    transform: translateY(-8px) rotateX(5deg);
+    box-shadow: var(--shadow-luxury);
+  }
+
+  .card-3d::before {
+    content: '';
+    @apply absolute inset-0 opacity-0;
+    background: var(--gradient-glow);
+    transition: var(--transition-smooth);
+  }
+
+  .card-3d:hover::before {
+    @apply opacity-20;
+  }
+
+  /* Watch Product Card */
+  .watch-card {
+    @apply card-3d rounded-2xl p-6;
+    backdrop-filter: blur(10px);
+  }
+
+  .watch-card:hover .watch-image {
+    transform: scale(1.1) rotateY(15deg);
+  }
+
+  .watch-image {
+    transition: var(--transition-luxury);
+    transform-style: preserve-3d;
+  }
+
+  /* Luxury Button Variants */
+  .btn-luxury {
+    @apply relative overflow-hidden;
+    background: var(--gradient-luxury);
+    box-shadow: var(--shadow-glow);
+    transition: var(--transition-luxury);
+  }
+
+  .btn-luxury:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-luxury);
+  }
+
+  .btn-luxury::before {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(45deg, transparent 30%, hsl(45 100% 95% / 0.3) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: var(--transition-smooth);
+  }
+
+  .btn-luxury:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Navigation Glow */
+  .nav-glow {
+    @apply relative;
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  .nav-glow::before {
+    content: '';
+    @apply absolute inset-0 opacity-30;
+    background: var(--gradient-glow);
+    border-radius: inherit;
+  }
+
+  /* Price Tag Glow */
+  .price-glow {
+    @apply relative;
+    background: var(--gradient-luxury);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+
+  /* Floating Animation */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Hero Gradient */
+  .hero-gradient {
+    background: var(--gradient-dark);
+    position: relative;
+  }
+
+  .hero-gradient::before {
+    content: '';
+    @apply absolute inset-0;
+    background: radial-gradient(circle at 50% 50%, hsl(45 100% 65% / 0.1) 0%, transparent 70%);
   }
 }
